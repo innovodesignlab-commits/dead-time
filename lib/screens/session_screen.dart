@@ -170,7 +170,7 @@ class _SessionScreenState extends State<SessionScreen>
     final t = Theme.of(context).textTheme;
     final meta = games.firstWhere((g) => g.type == widget.game);
     final total = widget.duration.inSeconds;
-    final frac = total == 0 ? 0.0 : (_secondsLeft / total).clamp(0.0, 1.0);
+    final frac = total == 0 ? 0.0 : (_secondsLeft / total).clamp(0.0, 1.0).toDouble();
 
     return PopScope(
       canPop: false,

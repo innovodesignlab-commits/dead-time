@@ -110,7 +110,7 @@ class _TapRushGameState extends State<TapRushGame> {
                   duration: const Duration(milliseconds: 1600),
                   builder: (context, v, child) => Transform.scale(
                     scale: 0.4 + 0.6 * v,
-                    child: Opacity(opacity: (0.3 + 0.7 * v).clamp(0, 1), child: child),
+                    child: Opacity(opacity: (0.3 + 0.7 * v).clamp(0.0, 1.0).toDouble(), child: child),
                   ),
                   child: Container(
                     width: 68,

@@ -103,7 +103,7 @@ class _ColorClashGameState extends State<ColorClashGame> {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
-    final frac = (_remaining / _timeBank).clamp(0.0, 1.0);
+    final frac = (_remaining / _timeBank).clamp(0.0, 1.0).toDouble();
 
     return Padding(
       padding: const EdgeInsets.all(24),

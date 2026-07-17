@@ -227,7 +227,7 @@ class _WaitDial extends StatelessWidget {
     var angle = math.atan2(v.dy, v.dx) + math.pi / 2; // 0 at top
     if (angle < 0) angle += 2 * math.pi;
     final frac = angle / (2 * math.pi);
-    onChanged((_min + frac * (_max - _min)).clamp(_min, _max));
+    onChanged((_min + frac * (_max - _min)).clamp(_min, _max).toDouble());
   }
 
   @override

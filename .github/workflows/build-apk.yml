@@ -1,0 +1,51 @@
+name: Build Dead Time APK
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Generate Android project files
+        run: flutter create --org com.deadtime.app --project-name dead_time .
+
+      - name: Install the AdMob manifest
+        run: cp android_config/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
+
+      - name: Set minimum Android version to 23
+        run: |
+          for f in android/app/build.gradle android/app/build.gradle.kts; do
+            if [ -f "$f" ]; then
+              sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 23/' "$f" || true
+              sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 23/' "$f" || true
+            fi
+          done
+
+      - name: Get packages
+        run: flutter pub get
+
+      - name: Build the APK
+        run: flutter build apk --release
+
+      - name: Upload the APK for download
+        uses: actions/upload-artifact@v4
+        with:
+          name: dead-time-apk
+          path: build/app/outputs/flutter-apk/app-release.apk

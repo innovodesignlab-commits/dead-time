@@ -26,8 +26,14 @@ jobs:
       - name: Generate Android project files
         run: flutter create --org com.deadtime.app --project-name dead_time .
 
-      - name: Install the AdMob manifest
-        run: cp android_config/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
+      - name: Inject app name, internet permission, and AdMob ID
+        run: |
+          M=android/app/src/main/AndroidManifest.xml
+          sed -i 's#<application#<uses-permission android:name="android.permission.INTERNET"/><application#' $M
+          sed -i 's#android:label="dead_time"#android:label="Dead Time"#' $M
+          sed -i 's#</application>#<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3940256099942544~3347511713"/></application>#' $M
+          echo "--- Final manifest: ---"
+          cat $M
 
       - name: Set minimum Android version to 23
         run: |
